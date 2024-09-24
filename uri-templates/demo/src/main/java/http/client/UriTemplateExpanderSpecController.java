@@ -15,11 +15,18 @@ public class UriTemplateExpanderSpecController {
     public static final String URI_TEMPLATE_EXPANDER_SPECIFICATION = "/uri-template-expander-specification";
 
     /**
+     * Thanks to https://github.com/nedelva for his comment and example.
+     *
+     * Key point:
+     * The annotations @Get, @PathVariable etc. can only bind one variable from each template expression.
+     * "/section-323{+path,x}/here" will not work right as template to extract variable values.
+     *
+     *
      * http://localhost:8080{+path,x}/here
      * [path: "/foo/bar", x: 1024]
      * http://localhost:8080/foo/bar,1024/here
      */
-    @Get("/section-323{+path,x}/here")
+    @Get("/section-323{+path},{x}/here")
     Map<String, String> reserved_expansion_with_multiple_variables(@Nullable String path, @Nullable String x, HttpRequest<?> httpRequest) throws MalformedURLException, URISyntaxException {
         /*
         url in uri template test:
